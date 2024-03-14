@@ -1,88 +1,82 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ItsYou extends StatelessWidget {
   final List<String> names;
   final int amount;
-  // final List<String> prachachuen = [];
-  // final List<String> inthakon = [];
-  // final List<String> kanokachiwa = [];
-  // final List<String> buranaphon = [];
-  final List<List<String>> houseName = [
-    ['a', 'b'],
-    ['inthakon'],
-    ['kanokachiwa'],
-    ['buranaphon']
-  ];
+  final List<List<String>> houseName = [[], [], [], []];
 
   ItsYou({
     Key? key,
     required this.names,
     required this.amount,
   }) : super(key: key) {
-    //this._random();
+    this._random();
   }
 
   _random() {
-    int cal = amount - (((amount / 4).ceil()) * 4).toInt();
+    int cal = amount % 4;
     for (int i = 0; i < names.length; i++) {
-      List<String> house;
-
       for (;;) {
         int index = Random().nextInt(4);
-        // List<String> houseCheck = houseName[index];
         if (houseName[index].length < (amount / 4)) {
           houseName[index].add(names[i]);
-          // house = houseCheck;
           break;
         }
       }
-      // house.add(names[i]);
       //ถ้าหารไม่ลงตัว
-      if (cal > 0) {
-        int index = Random().nextInt(4);
-        //String houseCheck = houseName[index];
-        // dataList(houseCheck).add(names[i]);
+      if (cal > 0 && i > 4) {
+        for (;;) {
+          int index = Random().nextInt(4);
+          if (houseName[index].length > 0) {
+            i == 3 ? i-- : i++;
+            houseName[index].add(names[i]);
+            break;
+          }
+        }
         cal--;
         i++;
       }
     }
-    //return;
   }
-
-  // List<String> dataList(String houseCheck) {
-  //   switch (houseCheck) {
-  //     case 'prachachuen':
-  //       return prachachuen;
-  //     case 'inthakon':
-  //       return inthakon;
-  //     case 'kanokachiwa':
-  //       return kanokachiwa;
-  //     case 'buranaphon':
-  //       return buranaphon;
-  //     default:
-  //       return [];
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ปู้น ๆ'),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Column(
           children: [
-            Text('ประชาชื่น'),
-            buildCardWithHouseList(houseName[0]),
-            // Text('อินทร'),
-            // buildCardWithHouseList(inthakon),
-            // Text('กนกอาชีวะ'),
-            // buildCardWithHouseList(kanokachiwa),
-            // Text('บูรณพล'),
-            // buildCardWithHouseList(buranaphon),
+            Text(
+              'ประชาชื่น',
+              style: TextStyle(fontSize: 20),
+            ),
+            Expanded(
+              child: buildCardWithHouseList(houseName[0]),
+            ),
+            Text(
+              'อินทร',
+              style: TextStyle(fontSize: 20),
+            ),
+            Expanded(
+              child: buildCardWithHouseList(houseName[1]),
+            ),
+            Text(
+              'กนกอาชีวะ',
+              style: TextStyle(fontSize: 20),
+            ),
+            Expanded(
+              child: buildCardWithHouseList(houseName[2]),
+            ),
+            Text(
+              'บูรณพล',
+              style: TextStyle(fontSize: 20),
+            ),
+            Expanded(
+              child: buildCardWithHouseList(houseName[3]),
+            ),
           ],
         ),
       ),
