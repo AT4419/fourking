@@ -17,28 +17,27 @@ class ItsYou extends StatelessWidget {
   }
 
   _random() {
-    int cal = amount % 4;
-    for (int i = 0; i < names.length; i++) {
-      for (;;) {
+    int remnant = amount % 4;
+    int lengName = names.length;
+    if (remnant > 0) {
+      List<bool> checkIn = [false, false, false, false];
+      while (
+          checkIn.where((element) => element == false).length > 4 - remnant) {
         int index = Random().nextInt(4);
-        if (houseName[index].length < (amount / 4)) {
-          houseName[index].add(names[i]);
-          break;
+        if (checkIn[index] == false) {
+          houseName[index].add(names.first);
+          names.removeAt(names.indexOf(names.first));
+          checkIn[index] = true;
+        } else {
+          continue;
         }
       }
-      //ถ้าหารไม่ลงตัว
-      if (cal > 0 && i > 4) {
-        for (;;) {
-          int index = Random().nextInt(4);
-          if (houseName[index].length > 0) {
-            i == 3 ? i-- : i++;
-            houseName[index].add(names[i]);
-            break;
-          }
-        }
-        cal--;
-        i++;
-      }
+    }
+    for (int i = 0; i < lengName; i++) {
+      int houseIndex = i % 4;
+      int index = Random().nextInt(names.length);
+      houseName[houseIndex].add(names[index]);
+      names.removeAt(index);
     }
   }
 
@@ -46,37 +45,31 @@ class ItsYou extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: ScrollController(),
         child: Column(
           children: [
             Text(
-              'ประชาชื่น',
+              'ประชาชื่น (${houseName[0].length})',
               style: TextStyle(fontSize: 20),
             ),
-            Expanded(
-              child: buildCardWithHouseList(houseName[0]),
-            ),
+            buildCardWithHouseList(houseName[0]),
             Text(
-              'อินทร',
+              'อินทร (${houseName[1].length})',
               style: TextStyle(fontSize: 20),
             ),
-            Expanded(
-              child: buildCardWithHouseList(houseName[1]),
-            ),
+            buildCardWithHouseList(houseName[1]),
             Text(
-              'กนกอาชีวะ',
+              'กนกอาชีวะ (${houseName[2].length})',
               style: TextStyle(fontSize: 20),
             ),
-            Expanded(
-              child: buildCardWithHouseList(houseName[2]),
-            ),
+            buildCardWithHouseList(houseName[2]),
             Text(
-              'บูรณพล',
+              'บูรณพล (${houseName[3].length})',
               style: TextStyle(fontSize: 20),
             ),
-            Expanded(
-              child: buildCardWithHouseList(houseName[3]),
-            ),
+            buildCardWithHouseList(houseName[3]),
           ],
         ),
       ),
@@ -85,15 +78,13 @@ class ItsYou extends StatelessWidget {
 }
 
 Widget buildCardWithHouseList(List<String> data) {
-  return Card(
-    elevation: 5.0,
-    child: ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(data[index]),
-        );
-      },
-    ),
+  return Column(
+    children: data
+        .map(
+          (e) => ListTile(
+            title: Text(e),
+          ),
+        )
+        .toList(),
   );
 }

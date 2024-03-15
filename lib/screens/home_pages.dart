@@ -62,14 +62,42 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    List<String> allNames = _nameController.text.split(' ');
+                    List<String> allNames =
+                        _nameController.text.trim().split(' ');
                     int amount = int.parse(_amountController.text);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return ItsYou(names: allNames, amount: amount);
-                      }),
-                    );
+                    allNames
+                                .where((element) =>
+                                    element.contains(' ') || element.isEmpty)
+                                .length >
+                            0
+                        ? amount--
+                        : amount = amount;
+                    if (amount != allNames.length) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("จำนวนชื่อกับจำนวนที่กรอกไม่ตรงกัน"),
+                            content: Text("กรุณากรอกให้ถูกต้อง"),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Close"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return ItsYou(names: allNames, amount: amount);
+                        }),
+                      );
+                    }
                   },
                   child: Text('คัดสรร'),
                 ),
