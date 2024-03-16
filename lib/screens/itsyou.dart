@@ -33,6 +33,7 @@ class ItsYou extends StatelessWidget {
         }
       }
     }
+    lengName = names.length;
     for (int i = 0; i < lengName; i++) {
       int houseIndex = i % 4;
       int index = Random().nextInt(names.length);
@@ -50,24 +51,52 @@ class ItsYou extends StatelessWidget {
         controller: ScrollController(),
         child: Column(
           children: [
-            Text(
-              'ประชาชื่น (${houseName[0].length})',
-              style: TextStyle(fontSize: 20),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color.fromARGB(255, 32, 28, 136)),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'ประชาชื่น (${houseName[0].length})',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
             buildCardWithHouseList(houseName[0]),
-            Text(
-              'อินทร (${houseName[1].length})',
-              style: TextStyle(fontSize: 20),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color.fromARGB(255, 32, 28, 136)),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'อินทร (${houseName[1].length})',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
             buildCardWithHouseList(houseName[1]),
-            Text(
-              'กนกอาชีวะ (${houseName[2].length})',
-              style: TextStyle(fontSize: 20),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color.fromARGB(255, 32, 28, 136)),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'กนกอาชีวะ (${houseName[2].length})',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
             buildCardWithHouseList(houseName[2]),
-            Text(
-              'บูรณพล (${houseName[3].length})',
-              style: TextStyle(fontSize: 20),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color.fromARGB(255, 32, 28, 136)),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'บูรณพล (${houseName[3].length})',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
             buildCardWithHouseList(houseName[3]),
           ],
@@ -78,13 +107,16 @@ class ItsYou extends StatelessWidget {
 }
 
 Widget buildCardWithHouseList(List<String> data) {
-  return Column(
-    children: data
-        .map(
-          (e) => ListTile(
-            title: Text(e),
-          ),
-        )
-        .toList(),
+  return Card(
+    color: Color.fromRGBO(236, 235, 255, 0.875),
+    child: Column(
+      children: data
+          .map(
+            (e) => ListTile(
+              title: Text(e),
+            ),
+          )
+          .toList(),
+    ),
   );
 }
